@@ -152,3 +152,103 @@ CREATE TABLE DetalleFacturas (
     FOREIGN KEY (id_factura) REFERENCES Facturas(id_factura),
     FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
 );
+
+--Datos 
+
+INSERT INTO Clientes (nombre, email, telefono) VALUES
+('Juan Pérez', 'juan@example.com', '1234567890'),
+('María López', 'maria@example.com', '0987654321'),
+('Carlos García', 'carlos@example.com', '5555555555'),
+('Ana Martínez', 'ana@example.com', '6666666666');
+
+
+INSERT INTO Productos (nombre, descripcion, precio, stock) VALUES
+('Camiseta', 'Camiseta de algodón', 10.00, 100),
+('Pantalón', 'Pantalón de mezclilla', 20.00, 50),
+('Chaqueta', 'Chaqueta de cuero', 50.00, 20),
+('Zapatos', 'Zapatos deportivos', 30.00, 75);
+
+INSERT INTO Variaciones (id_producto, talla, color, estilo) VALUES
+(1, 'M', 'Rojo', 'Casual'),
+(2, 'L', 'Azul', 'Formal'),
+(3, 'S', 'Negro', 'Deportivo'),
+(4, 'XL', 'Blanco', 'Casual');
+
+
+INSERT INTO Almacenes (nombre, ubicacion) VALUES
+('Almacén Central', 'Calle Principal 123'),
+('Almacén Secundario', 'Avenida Secundaria 456'),
+('Almacén Norte', 'Calle Norte 789'),
+('Almacén Sur', 'Avenida Sur 101');
+
+INSERT INTO Movimientos (id_producto, id_almacen, tipo, fecha, cantidad) VALUES
+(1, 1, 'entrada', '2024-06-01', 50),
+(2, 2, 'salida', '2024-06-02', 20),
+(3, 3, 'entrada', '2024-06-03', 15),
+(4, 4, 'salida', '2024-06-04', 10);
+
+INSERT INTO Proveedores (nombre, direccion, telefono) VALUES
+('Proveedor A', 'Calle A 123', '1111111111'),
+('Proveedor B', 'Calle B 456', '2222222222'),
+('Proveedor C', 'Calle C 789', '3333333333'),
+('Proveedor D', 'Calle D 101', '4444444444');
+
+INSERT INTO Compras (id_proveedor, fecha, total) VALUES
+(1, '2024-06-05', 500.00),
+(2, '2024-06-06', 300.00),
+(3, '2024-06-07', 200.00),
+(4, '2024-06-08', 400.00);
+
+INSERT INTO DetalleCompras (id_compra, id_producto, cantidad, precio) VALUES
+(1, 1, 10, 10.00),
+(2, 2, 15, 20.00),
+(3, 3, 5, 50.00),
+(4, 4, 7, 30.00);
+
+INSERT INTO Ventas (id_cliente, fecha, total) VALUES
+(1, '2024-06-09', 150.00),
+(2, '2024-06-10', 100.00),
+(3, '2024-06-11', 200.00),
+(4, '2024-06-12', 250.00);
+
+INSERT INTO DetalleVentas (id_venta, id_producto, cantidad, precio) VALUES
+(1, 1, 3, 10.00),
+(2, 2, 2, 20.00),
+(3, 3, 4, 50.00),
+(4, 4, 5, 30.00);
+
+INSERT INTO Usuarios (nombre_usuario, contrasena, rol) VALUES
+('admin', 'admin123', 'admin'),
+('user1', 'user1123', 'user'),
+('user2', 'user2123', 'user'),
+('user3', 'user3123', 'user');
+
+INSERT INTO Permisos (descripcion) VALUES
+('Ver productos'),
+('Agregar productos'),
+('Eliminar productos'),
+('Actualizar productos');
+
+INSERT INTO UsuarioPermiso (id_usuario, id_permiso) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(3, 1);
+
+INSERT INTO Fidelizacion (id_cliente, puntos, descuentos) VALUES
+(1, 100, 10.00),
+(2, 200, 20.00),
+(3, 300, 30.00),
+(4, 400, 40.00);
+
+INSERT INTO Facturas (id_cliente, fecha, subtotal, itbis, descuento, recargo, total, ncf) VALUES
+(1, '2024-06-09', 100.00, 18.00, 5.00, 2.00, 115.00, 'A001'),
+(2, '2024-06-10', 200.00, 36.00, 10.00, 4.00, 230.00, 'A002'),
+(3, '2024-06-11', 150.00, 27.00, 7.50, 3.00, 172.50, 'A003'),
+(4, '2024-06-12', 250.00, 45.00, 12.50, 5.00, 287.50, 'A004');
+
+INSERT INTO DetalleFacturas (id_factura, id_producto, cantidad, precio_unitario, importe) VALUES
+(1, 1, 3, 10.00, 30.00),
+(2, 2, 5, 20.00, 100.00),
+(3, 3, 2, 50.00, 100.00),
+(4, 4, 1, 30.00, 30.00);
