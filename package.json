@@ -1,0 +1,5 @@
+{ "dependencies": { "concurrently": "^8.2.2" },"scripts": {
+  "start": "concurrently \"cd node && bun start\" \"cd front && bun run dev\""
+}
+ }
+

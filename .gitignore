@@ -1,0 +1,26 @@
+# Node.js dependencies
+node_modules/
+
+# Frontend dependencies
+frontend/node_modules/
+
+# Backend dependencies
+backend/node_modules/
+
+# Vite cache
+frontend/.vite/
+
+# Build output
+frontend/dist/
+backend/dist/
+
+# Electron output
+out/
+dist/
+*.zip
+
+# Logs
+*.log
+
+# Environment variables
+.env
