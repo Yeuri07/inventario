@@ -5,4 +5,6 @@ const router = express.Router()
 
 router.get('/',getAllClient)
 router.get('/:id_cliente',getClient)
+
+
 export default router
