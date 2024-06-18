@@ -3,7 +3,8 @@
 
 import { Route, Routes } from 'react-router-dom';
 import  AsideMenu  from '../components/AsideMenu.jsx';
-import {Sell, Order, Products} from '../pages/changePage.jsx'; 
+import {Sell, Order, Products, AddProducts, Analytic} from '../pages/changePage.jsx'; 
+
 
 export function Layout (){
 	return (
@@ -19,6 +20,8 @@ export function Layout (){
             <Route path='/sell' Component={Sell} />
 			<Route path='/order' Component={Order} />
 			<Route path='/productos' Component={Products} />
+			<Route path='/productos/create' Component={AddProducts} />
+			<Route path='/analytics' Component={Analytic} />
 
         </Routes>
 		</main>

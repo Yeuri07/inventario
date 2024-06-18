@@ -45,7 +45,7 @@ export default function AsideMenu (){
               Transactions
             </SideMenuItem>
 
-            <SideMenuItem href="/#" >
+            <SideMenuItem href="/analytics" >
             <img src={Analytics} alt="sell-icon" />
                Analytics
             </SideMenuItem>

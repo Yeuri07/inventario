@@ -9,7 +9,7 @@
 import { Link } from 'react-router-dom'
 // eslint-disable-next-line react/prop-types
 export default function SideMenuItem ({href, children }){
-    console.log(href)
+    
     return(
         
     <li className="hover:bg-gray-600 rounded-lg">
