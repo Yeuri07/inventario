@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+#app{
+    display: grid;
+    grid-template-areas: 
+    "aside main main";
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 1fr auto;
+}
