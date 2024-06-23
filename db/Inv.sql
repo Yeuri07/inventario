@@ -153,6 +153,374 @@ CREATE TABLE DetalleFacturas (
     FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
 );
 
+-- add tabla new v1
+
+-- Use the database
+USE inventario;
+
+-- Create Categorías de Productos
+CREATE TABLE categorias (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+-- Create Subcategorías de Productos
+CREATE TABLE subcategorias (
+    id_subcategoria INT AUTO_INCREMENT PRIMARY KEY,
+    id_categoria INT,
+    nombre VARCHAR(255) NOT NULL,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
+);
+
+-- Create Marcas
+CREATE TABLE marcas (
+    id_marca INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+-- Create Sucursales
+CREATE TABLE sucursales (
+    id_sucursal INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    direccion TEXT
+);
+
+-- Create Empleados
+CREATE TABLE empleados (
+    id_empleado INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    id_sucursal INT,
+    FOREIGN KEY (id_sucursal) REFERENCES sucursales(id_sucursal)
+);
+
+-- Create Roles de Empleados
+CREATE TABLE roles (
+    id_rol INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+-- Create Asignación de Roles
+CREATE TABLE asignacion_roles (
+    id_empleado INT,
+    id_rol INT,
+    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado),
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
+);
+
+-- Create Turnos de Trabajo
+CREATE TABLE turnos (
+    id_turno INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    hora_inicio TIME,
+    hora_fin TIME
+);
+
+-- Create Asignación de Turnos
+CREATE TABLE asignacion_turnos (
+    id_empleado INT,
+    id_turno INT,
+    fecha DATE,
+    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado),
+    FOREIGN KEY (id_turno) REFERENCES turnos(id_turno)
+);
+
+-- Create Pedidos
+CREATE TABLE pedidos (
+    id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    fecha DATE,
+    total DECIMAL(10,2),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+-- Create Detalle de Pedidos
+CREATE TABLE detalle_pedidos (
+    id_detalle_pedido INT AUTO_INCREMENT PRIMARY KEY,
+    id_pedido INT,
+    id_producto INT,
+    cantidad INT,
+    precio DECIMAL(10,2),
+    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+-- Create Promociones
+CREATE TABLE promociones (
+    id_promocion INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descuento DECIMAL(10,2)
+);
+
+-- Create Productos en Promoción
+CREATE TABLE productos_promocion (
+    id_producto INT,
+    id_promocion INT,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+    FOREIGN KEY (id_promocion) REFERENCES promociones(id_promocion)
+);
+
+-- Create Devoluciones
+CREATE TABLE devoluciones (
+    id_devolucion INT AUTO_INCREMENT PRIMARY KEY,
+    id_venta INT,
+    fecha DATE,
+    motivo TEXT,
+    FOREIGN KEY (id_venta) REFERENCES ventas(id_venta)
+);
+
+-- Create Detalle de Devoluciones
+CREATE TABLE detalle_devoluciones (
+    id_detalle_devolucion INT AUTO_INCREMENT PRIMARY KEY,
+    id_devolucion INT,
+    id_producto INT,
+    cantidad INT,
+    precio DECIMAL(10,2),
+    FOREIGN KEY (id_devolucion) REFERENCES devoluciones(id_devolucion),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+-- Create Cajas Registradoras
+CREATE TABLE cajas (
+    id_caja INT AUTO_INCREMENT PRIMARY KEY,
+    id_sucursal INT,
+    nombre VARCHAR(255) NOT NULL,
+    FOREIGN KEY (id_sucursal) REFERENCES sucursales(id_sucursal)
+);
+
+-- Create Transacciones en Caja
+CREATE TABLE transacciones_caja (
+    id_transaccion INT AUTO_INCREMENT PRIMARY KEY,
+    id_caja INT,
+    id_venta INT,
+    fecha DATE,
+    total DECIMAL(10,2),
+    FOREIGN KEY (id_caja) REFERENCES cajas(id_caja),
+    FOREIGN KEY (id_venta) REFERENCES ventas(id_venta)
+);
+
+-- Create Pagos
+CREATE TABLE pagos (
+    id_pago INT AUTO_INCREMENT PRIMARY KEY,
+    id_factura INT,
+    fecha DATE,
+    monto DECIMAL(10,2),
+    metodo VARCHAR(255),
+    FOREIGN KEY (id_factura) REFERENCES facturas(id_factura)
+);
+
+-- Create Cuentas por Cobrar
+CREATE TABLE cuentas_cobrar (
+    id_cuenta INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    monto DECIMAL(10,2),
+    fecha_vencimiento DATE,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+-- Create Cobros
+CREATE TABLE cobros (
+    id_cobro INT AUTO_INCREMENT PRIMARY KEY,
+    id_cuenta INT,
+    fecha DATE,
+    monto DECIMAL(10,2),
+    FOREIGN KEY (id_cuenta) REFERENCES cuentas_cobrar(id_cuenta)
+);
+
+-- Create Incidencias de Productos
+CREATE TABLE incidencias_productos (
+    id_incidencia INT AUTO_INCREMENT PRIMARY KEY,
+    id_producto INT,
+    fecha DATE,
+    descripcion TEXT,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+-- Create Reclamaciones
+CREATE TABLE reclamaciones (
+    id_reclamacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    fecha DATE,
+    descripcion TEXT,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+-- Create Resoluciones de Reclamaciones
+CREATE TABLE resoluciones_reclamaciones (
+    id_resolucion INT AUTO_INCREMENT PRIMARY KEY,
+    id_reclamacion INT,
+    fecha DATE,
+    descripcion TEXT,
+    FOREIGN KEY (id_reclamacion) REFERENCES reclamaciones(id_reclamacion)
+);
+
+-- Create Transportistas
+CREATE TABLE transportistas (
+    id_transportista INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    telefono VARCHAR(50)
+);
+
+-- Create Envios
+CREATE TABLE envios (
+    id_envio INT AUTO_INCREMENT PRIMARY KEY,
+    id_venta INT,
+    id_transportista INT,
+    fecha DATE,
+    costo DECIMAL(10,2),
+    FOREIGN KEY (id_venta) REFERENCES ventas(id_venta),
+    FOREIGN KEY (id_transportista) REFERENCES transportistas(id_transportista)
+);
+
+-- Create Historial de Precios
+CREATE TABLE historial_precios (
+    id_historial INT AUTO_INCREMENT PRIMARY KEY,
+    id_producto INT,
+    fecha DATE,
+    precio DECIMAL(10,2),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+-- Create Ofertas Especiales
+CREATE TABLE ofertas_especiales (
+    id_oferta INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    fecha_inicio DATE,
+    fecha_fin DATE
+);
+
+-- Create Productos en Ofertas
+CREATE TABLE productos_ofertas (
+    id_producto INT,
+    id_oferta INT,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+    FOREIGN KEY (id_oferta) REFERENCES ofertas_especiales(id_oferta)
+);
+
+-- Create Inventario de Sucursal
+CREATE TABLE inventario_sucursal (
+    id_inventario INT AUTO_INCREMENT PRIMARY KEY,
+    id_sucursal INT,
+    id_producto INT,
+    cantidad INT,
+    FOREIGN KEY (id_sucursal) REFERENCES sucursales(id_sucursal),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+-- Create Compras de Sucursal
+CREATE TABLE compras_sucursal (
+    id_compra INT AUTO_INCREMENT PRIMARY KEY,
+    id_sucursal INT,
+    id_proveedor INT,
+    fecha DATE,
+    total DECIMAL(10,2),
+    FOREIGN KEY (id_sucursal) REFERENCES sucursales(id_sucursal),
+    FOREIGN KEY (id_proveedor) REFERENCES proveedores(id_proveedor)
+);
+
+-- Create Detalle de Compras de Sucursal
+CREATE TABLE detalle_compras_sucursal (
+    id_detalle INT AUTO_INCREMENT PRIMARY KEY,
+    id_compra INT,
+    id_producto INT,
+    cantidad INT,
+    precio DECIMAL(10,2),
+    FOREIGN KEY (id_compra) REFERENCES compras_sucursal(id_compra),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+-- Create Eventos
+CREATE TABLE eventos (
+    id_evento INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    fecha DATE,
+    descripcion TEXT
+);
+
+-- Create Participantes en Eventos
+CREATE TABLE participantes_eventos (
+    id_participante INT AUTO_INCREMENT PRIMARY KEY,
+    id_evento INT,
+    id_cliente INT,
+    FOREIGN KEY (id_evento) REFERENCES eventos(id_evento),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+-- Create Mensajes de Clientes
+CREATE TABLE mensajes_clientes (
+    id_mensaje INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    fecha DATE,
+    mensaje TEXT,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+-- Create Respuestas a Mensajes
+CREATE TABLE respuestas_mensajes (
+    id_respuesta INT AUTO_INCREMENT PRIMARY KEY,
+    id_mensaje INT,
+    fecha DATE,
+    respuesta TEXT,
+    FOREIGN KEY (id_mensaje) REFERENCES mensajes_clientes(id_mensaje)
+);
+
+-- Create Historial de Cambios en Inventario
+CREATE TABLE historial_cambios_inventario (
+    id_historial INT AUTO_INCREMENT PRIMARY KEY,
+    id_producto INT,
+    fecha DATE,
+    cambio INT,
+    motivo TEXT,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+-- Create Documentos de Facturación
+CREATE TABLE documentos_facturacion (
+    id_documento INT AUTO_INCREMENT PRIMARY KEY,
+    id_factura INT,
+    tipo VARCHAR(255),
+    url TEXT,
+    FOREIGN KEY (id_factura) REFERENCES facturas(id_factura)
+);
+
+-- Create Metas de Ventas
+CREATE TABLE metas_ventas (
+    id_meta INT AUTO_INCREMENT PRIMARY KEY,
+    id_sucursal INT,
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    objetivo DECIMAL(10,2),
+    FOREIGN KEY (id_sucursal) REFERENCES sucursales(id_sucursal)
+);
+
+-- Create Logros de Metas
+CREATE TABLE logros_metas (
+    id_logro INT AUTO_INCREMENT PRIMARY KEY,
+    id_meta INT,
+    fecha DATE,
+    ventas DECIMAL(10,2),
+    FOREIGN KEY (id_meta) REFERENCES metas_ventas(id_meta)
+);
+
+-- Create Reglas de Descuentos
+CREATE TABLE reglas_descuentos (
+    id_regla INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    tipo VARCHAR(255),
+    valor DECIMAL(10,2)
+);
+
+-- Create Aplicaciones de Reglas de Descuentos
+CREATE TABLE aplicaciones_reglas_descuentos (
+    id_aplicacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_regla INT,
+    id_producto INT,
+    FOREIGN KEY (id_regla) REFERENCES reglas_descuentos(id_regla),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+
 --Datos 
 
 INSERT INTO Clientes (nombre, email, telefono) VALUES
@@ -252,3 +620,9 @@ INSERT INTO DetalleFacturas (id_factura, id_producto, cantidad, precio_unitario,
 (2, 2, 5, 20.00, 100.00),
 (3, 3, 2, 50.00, 100.00),
 (4, 4, 1, 30.00, 30.00);
+
+-- Contar tablas
+
+SELECT COUNT(*) 
+FROM information_schema.tables 
+WHERE table_schema = 'nombre_de_tu_base_de_datos';
